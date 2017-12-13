@@ -7,7 +7,7 @@
     },
     "message": "The following service(s) have been created in your project: ${NAME}.\n",
     "metadata": {
-        "name": "virtttools-web"
+        "name": "virtttools-web",
         "annotations": {
             "openshift.io/display-name": "Virt Tools",
             "description": "Static web for virt-tools.org",
@@ -88,9 +88,8 @@
                     "type": "Source",
                     "sourceStrategy": {
                         "from": {
-                            "kind": "ImageStreamTag",
-                            "namespace": "${NAMESPACE}",
-                            "name": "httpd:2.4"
+                            "kind": "DockerImage",
+                            "name": "centos/httpd-24-centos7:latest"
                         }
                     }
                 },
