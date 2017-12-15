@@ -93,7 +93,7 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}",
+                "name": "${NAME}-updater",
                 "annotations": {
                     "description": "Keeps track of changes in the application image"
                 }
@@ -125,13 +125,7 @@
                             "kind": "ImageStreamTag",
                             "name": "python:2.7",
 			    "namespace": "${NAMESPACE}"
-                        },
-			"env": [
-			    {
-				"name": "APP_FILE",
-				"value": "planet.py"
-			    }
-			]
+                        }
                     }
                 },
                 "output": {
@@ -229,7 +223,7 @@
                             },
 			    {
 				"name": "${NAME}-updater",
-				"image": "${NAME}-updater:latest",
+				"image": "docker-registry.default.svc:5000/libvirt/${NAME}-updater:latest",
 				"volumeMounts": [
 				    {
 					"name": "${NAME}-web",
