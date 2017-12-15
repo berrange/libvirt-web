@@ -45,12 +45,15 @@
 	    "kind": "PersistentVolumeClaim",
 	    "apiVersion": "v1",
 	    "metadata": {
-		"name": "${NAME}-root"
+		"name": "${NAME}-web"
 	    },
 	    "spec": {
+		"accessModes": [
+		    "ReadWriteOnce"
+		],
 		"resources": {
 		    "requests": {
-			"storage": "100Mi"
+			"storage": "1Gi"
 		    }
 		}
 	    }
@@ -62,9 +65,12 @@
 		"name": "${NAME}-cache"
 	    },
 	    "spec": {
+		"accessModes": [
+		    "ReadWriteOnce"
+		],
 		"resources": {
 		    "requests": {
-			"storage": "100Mi"
+			"storage": "1Gi"
 		    }
 		}
 	    }
@@ -97,7 +103,7 @@
             "kind": "BuildConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}",
+                "name": "${NAME}-updater",
                 "annotations": {
                     "description": "Defines how to build the application",
                     "template.alpha.openshift.io/wait-for-ready": "true"
@@ -117,15 +123,21 @@
                     "sourceStrategy": {
                         "from": {
                             "kind": "ImageStreamTag",
-                            "name": "python:27",
+                            "name": "python:2.7",
 			    "namespace": "${NAMESPACE}"
-                        }
+                        },
+			"env": [
+			    {
+				"name": "APP_FILE",
+				"value": "planet.py"
+			    }
+			]
                     }
                 },
                 "output": {
                     "to": {
                         "kind": "ImageStreamTag",
-                        "name": "${NAME}:latest"
+                        "name": "${NAME}-updater:latest"
                     }
                 },
                 "triggers": [
@@ -187,13 +199,13 @@
                                 ],
 				"volumeMounts": [
 				    {
-					"name": "${NAME}-root",
+					"name": "${NAME}-web",
 					"mountPath": "/opt/app-root/src"
 				    }
 				],
-                                "readinessProbe": {
+				"readinessProbe": {
                                     "timeoutSeconds": 3,
-                                    "initialDelaySeconds": 3,
+                                    "initialDelaySeconds": 30000,
                                     "httpGet": {
                                         "path": "/",
                                         "port": 8080
@@ -201,7 +213,7 @@
                                 },
                                 "livenessProbe": {
                                     "timeoutSeconds": 3,
-                                    "initialDelaySeconds": 30,
+                                    "initialDelaySeconds": 30000,
                                     "httpGet": {
                                         "path": "/",
                                         "port": 8080
@@ -214,13 +226,33 @@
                                 },
                                 "env": [
                                 ]
-                            }
+                            },
+			    {
+				"name": "${NAME}-updater",
+				"image": "${NAME}-updater:latest",
+				"volumeMounts": [
+				    {
+					"name": "${NAME}-web",
+					"mountPath": "/opt/app-root/web"
+				    },
+				    {
+					"name": "${NAME}-cache",
+					"mountPath": "/opt/app-root/cache"
+				    }
+				]
+			    }
                         ],
 			"volumes": [
 			    {
-				"name": "${NAME}-root",
+				"name": "${NAME}-web",
 				"persistentVolumeClaim": {
-				    "claimName": "${NAME}-root"
+				    "claimName": "${NAME}-web"
+				}
+			    },
+			    {
+				"name": "${NAME}-cache",
+				"persistentVolumeClaim": {
+				    "claimName": "${NAME}-cache"
 				}
 			    }
 			]
@@ -267,7 +299,7 @@
             "name": "CONTEXT_DIR",
             "displayName": "Context Directory",
             "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-            "value": "virttools-planet"
+            "value": "virttools-planet/updater"
         },
         {
             "name": "APPLICATION_DOMAIN",
