@@ -5,7 +5,7 @@ import time
 
 update = "./planet.py ./virt-tools/config.ini"
 
-os.system("rsync virt-tools/images /opt/app-root/web/images")
+os.system("rsync -av virt-tools/images/ /opt/app-root/web/images/")
 
 while True:
     ret = os.system(update)
