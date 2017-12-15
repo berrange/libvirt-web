@@ -194,12 +194,12 @@
 				"volumeMounts": [
 				    {
 					"name": "${NAME}-web",
-					"mountPath": "/opt/app-root/src"
+					"mountPath": "/opt/rh/httpd24/root/var/www/html"
 				    }
 				],
 				"readinessProbe": {
                                     "timeoutSeconds": 3,
-                                    "initialDelaySeconds": 30000,
+                                    "initialDelaySeconds": 3,
                                     "httpGet": {
                                         "path": "/",
                                         "port": 8080
@@ -207,7 +207,7 @@
                                 },
                                 "livenessProbe": {
                                     "timeoutSeconds": 3,
-                                    "initialDelaySeconds": 30000,
+                                    "initialDelaySeconds": 30,
                                     "httpGet": {
                                         "path": "/",
                                         "port": 8080
