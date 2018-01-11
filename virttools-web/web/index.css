@@ -4,7 +4,7 @@ body, #header h1, #header h2 {
     margin: 0px;
 }
 
-#header {
+#header, #footer {
     background: rgb(0,0,0) url(header-bg.png) repeat-x top left;
     height: 115px;
     padding-right: 20px;
@@ -26,6 +26,17 @@ body, #header h1, #header h2 {
     padding-right: 20px;
     font-style: italic;
     font-weight: normal;
+}
+
+#footer {
+    clear: both;
+    margin-bottom: 0px;
+    text-align: right;
+    height: 80px;
+}
+
+#footer img {
+    padding: 10px;
 }
 
 div.project {
