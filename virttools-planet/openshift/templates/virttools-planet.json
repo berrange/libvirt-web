@@ -170,6 +170,24 @@
                 "strategy": {
                     "type": "Rolling"
                 },
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "virttools-planet-updater"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "${NAME}-updater:latest"
+                            }
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
                 "replicas": 1,
                 "selector": {
                     "name": "${NAME}"
