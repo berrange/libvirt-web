@@ -122,9 +122,8 @@
                     "type": "Source",
                     "sourceStrategy": {
                         "from": {
-                            "kind": "ImageStreamTag",
-                            "name": "python:2.7",
-			    "namespace": "${NAMESPACE}"
+                            "kind": "DockerImage",
+                            "name": "centos/python-27-centos7"
                         }
                     }
                 },
