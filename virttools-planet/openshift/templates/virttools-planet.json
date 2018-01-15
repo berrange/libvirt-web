@@ -300,7 +300,7 @@
             "displayName": "Git Repository URL",
             "description": "The URL of the repository with your application source code.",
             "required": true,
-            "value": "git://libvirt.org/libvirt-web.git"
+            "value": "https://github.com/berrange/libvirt-web"
         },
         {
             "name": "SOURCE_REPOSITORY_REF",
